@@ -176,6 +176,12 @@ MonoBehaviour:
   m_LoadedToolbars: []
   m_LastLoadedLayoutName: Default
 --- !u!114 &8
+    y: 760.8
+    width: 1536
+    height: 20
+  m_MinSize: {x: 0, y: 0}
+  m_MaxSize: {x: 0, y: 0}
+--- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
