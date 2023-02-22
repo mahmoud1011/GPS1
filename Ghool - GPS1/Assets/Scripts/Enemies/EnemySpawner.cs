@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
         {
             // Choose a random position on the screen to spawn the enemies
             float xPosition = Random.Range(-5f, 9f);
-            float yPosition = Random.Range (-0.01f, 0f);
+            float yPosition = Random.Range(-0.01f, 0f);
             Vector3 spawnPosition = new Vector3(xPosition, yPosition, 0f);
 
             // Choose a random enemy prefab to spawn
