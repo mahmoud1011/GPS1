@@ -12,7 +12,6 @@ public class AimShoot : MonoBehaviour
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         mousePos=mainCam.ScreenToWorldPoint(Input.mousePosition);
