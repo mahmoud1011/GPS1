@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-//Mahmoud Anwar 0130645
+// Anwar
 public class Arrow : MonoBehaviour
 {
     private void OnBecameInvisible()

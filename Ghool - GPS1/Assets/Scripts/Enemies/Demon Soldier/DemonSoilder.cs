@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Mahmoud Anwar 0130645
+//Anwar
 public class DemonSoilder : MonoBehaviour
 {
     public static event Action<DemonSoilder> OnEnemyKilled;
