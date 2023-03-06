@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Player : MonoBehaviour
+public class PlayerOld : MonoBehaviour
 {
     public float maxPlayerHP = 100.0f; // Maximum HP represented as a percentage
     public float playerHP = 100.0f; // HP represented as a percentage
