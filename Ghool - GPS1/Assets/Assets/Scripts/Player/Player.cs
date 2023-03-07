@@ -33,13 +33,20 @@ public class Player : MonoBehaviour
 
     public bool canFire;
     private float timer;
+    private float knockbackForce = 4.0f;
 
-    public Sprite[] playerSprites; // Array of player sprites
-    private SpriteRenderer spriteRenderer; // Reference to the player'
+    public HealthBar healthBar;
+    //public Sprite[] playerSprites; // Array of player sprites
+    //private SpriteRenderer spriteRenderer; // Reference to the player'
+    public AnimationClip[] playerAnimations;
+     Animator animator;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer=GetComponent<SpriteRenderer>();
+        //spriteRenderer=GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        playerHP = maxPlayerHP;
+        healthBar.SetHealth(playerHP, maxPlayerHP);
         buffSystem = new BuffSystem();
         buffSystem.GetStats(maxPlayerHP, movementSpeed, timeBetweenShot, hpRegenPerSecond);
         /*buffSystem.GetStats(maxPlayerHP, movementSpeed, timeBetweenShot, hpRegenPerSecond);*/ //fuction to transfer
@@ -75,18 +82,21 @@ public class Player : MonoBehaviour
         //}
         // Update the player's position based on input
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        transform.position += new Vector3(moveInput.x, moveInput.y, 0) * movementSpeed * Time.deltaTime;
-
+        if (moveInput.magnitude > 0)
+        {
+            Vector2 normalizedMoveInput = moveInput.normalized;
+            transform.position += new Vector3(normalizedMoveInput.x, normalizedMoveInput.y, 0) * movementSpeed * Time.deltaTime;
+        }
         // Update the player's rotation to point towards the mouse cursor
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 direction = new Vector3(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        int spriteIndex = Mathf.RoundToInt((angle / 360.0f) * playerSprites.Length) % playerSprites.Length;
-        if (spriteIndex < 0)
+        int animationIndex = Mathf.RoundToInt((angle / 360.0f) * playerAnimations.Length) % playerAnimations.Length;
+        if (animationIndex < 0)
         {
-            spriteIndex += playerSprites.Length;
+            animationIndex += playerAnimations.Length;
         }
-        spriteRenderer.sprite = playerSprites[spriteIndex];
+        animator.Play(playerAnimations[animationIndex].name);
         //transform.rotation = Quaternion.Euler(0, 0, angle);
 
         // Update the player's properties
@@ -98,6 +108,7 @@ public class Player : MonoBehaviour
         if (timeSinceLastRegen >= 1.0f)
         {
             playerHP = Mathf.Clamp(playerHP + maxPlayerHP * (hpRegenPerSecond / 100.0f), 0.0f, maxPlayerHP);
+            healthBar.SetHealth(playerHP, maxPlayerHP);
             timeSinceLastRegen = 0.0f;
         }
 
@@ -128,6 +139,7 @@ public class Player : MonoBehaviour
             Instantiate(bullet, transform.position, Quaternion.identity);
             timeBetweenShot += Time.deltaTime;
             playerHP = Mathf.Clamp(playerHP - hpLostPerShot, 0.0f, maxPlayerHP);
+            healthBar.SetHealth(playerHP, maxPlayerHP);
         }
 
     }
@@ -135,12 +147,14 @@ public class Player : MonoBehaviour
     public void HealingBlob()
     {
         playerHP += 2.5f;
+        healthBar.SetHealth(playerHP, maxPlayerHP);
     }
 
     public void DmgTaken(float dmgAmount)
     {
         Debug.Log($"Damage Amount: {dmgAmount}");
         playerHP -= dmgAmount;
+        healthBar.SetHealth(playerHP, maxPlayerHP);
         Debug.Log($"Healht is now: {dmgAmount}");
         if (playerHP <= 0.0f)
         {
@@ -180,10 +194,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        //just incase enemy collision + traps / props
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Vector2 direction = transform.position - collision.transform.position;
+            direction.Normalize();
+            GetComponent<Rigidbody2D>().AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+            StartCoroutine(StopKnockback());
+        }
     }
-
+    private IEnumerator StopKnockback()
+    {
+        yield return new WaitForSeconds(0.3f); // wait for half a second
+        GetComponent<Rigidbody2D>().velocity = Vector3.zero; // or Rigidbody2D.velocity = Vector2.zero; for 2D
+    }
 }
