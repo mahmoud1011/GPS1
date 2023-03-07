@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         ShootBullet();
-        StayOnScreen();
+        //StayOnScreen();
         // Update the player's properties based on its current HP range (may need to simplify into function)
         if (playerHP > 30.0f)
         {
@@ -160,25 +160,25 @@ public class Player : MonoBehaviour
         hpRegenPerSecond = dhpRegenPerSecond;
     }
 
-    public void StayOnScreen()
-    {
-        if(transform.position.x <= -8.85)
-        {
-            transform.position = new Vector2(-8.85f, transform.position.y);
-        }
-        else if(transform.position.x >= 8.85)
-        {
-            transform.position = new Vector2(8.85f, transform.position.y);
-        }
-        else if (transform.position.y >= 4.82)
-        {
-            transform.position = new Vector2(transform.position.x, 4.82f);
-        }
-        else if (transform.position.y <= -4.82)
-        {
-            transform.position = new Vector2(transform.position.x, -4.82f);
-        }
-    }
+    //public void StayOnScreen()
+    //{
+    //    if(transform.position.x <= -8.85)
+    //    {
+    //        transform.position = new Vector2(-8.85f, transform.position.y);
+    //    }
+    //    else if(transform.position.x >= 8.85)
+    //    {
+    //        transform.position = new Vector2(8.85f, transform.position.y);
+    //    }
+    //    else if (transform.position.y >= 4.82)
+    //    {
+    //        transform.position = new Vector2(transform.position.x, 4.82f);
+    //    }
+    //    else if (transform.position.y <= -4.82)
+    //    {
+    //        transform.position = new Vector2(transform.position.x, -4.82f);
+    //    }
+    //}
 
     
     public void OnCollisionEnter2D(Collision2D collision)
