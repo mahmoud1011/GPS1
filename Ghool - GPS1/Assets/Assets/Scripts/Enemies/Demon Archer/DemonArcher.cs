@@ -46,6 +46,17 @@ public class DemonArcher : MonoBehaviour
             SetTargetPosition();
         }
 
+        // Flip the enemy sprite to face the player
+        Vector3 direction = playerTransform.position - transform.position;
+        if (direction.x < 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+
     }
 
     private void ShootArrow()

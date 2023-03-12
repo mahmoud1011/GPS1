@@ -12,7 +12,8 @@ public class DemonSoilder : MonoBehaviour
     [SerializeField] float health, maxHealth = 3f;
     [SerializeField] float moveSpeed = 2f;
     public float damage = 10.0f;
-    
+    private float knockbackForce = 4.0f;
+
 
     Rigidbody2D rb;
     Transform target;
@@ -71,5 +72,21 @@ public class DemonSoilder : MonoBehaviour
         {
             player.DmgTaken(damage);
         }
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Vector2 direction = transform.position - collision.transform.position;
+            direction.Normalize();
+            GetComponent<Rigidbody2D>().AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+            StartCoroutine(StopKnockback());
+        }
+    }
+
+    private IEnumerator StopKnockback()
+    {
+        yield return new WaitForSeconds(0.3f); // wait for half a second
+        GetComponent<Rigidbody2D>().velocity = Vector3.zero; // or Rigidbody2D.velocity = Vector2.zero; for 2D
     }
 }
