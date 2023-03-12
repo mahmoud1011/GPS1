@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
     public bool canFire;
     private float timer;
-    private float knockbackForce = 4.0f;
+    private float knockbackForce = 3.5f;
 
     public HealthBar healthBar;
     //public Sprite[] playerSprites; // Array of player sprites

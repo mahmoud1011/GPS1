@@ -71,6 +71,7 @@ public class DemonSoilder : MonoBehaviour
         if(collision.gameObject.tag==("Player"))
         {
             player.DmgTaken(damage);
+            CameraShake.instance.StartCoroutine(CameraShake.instance.Shake());
         }
     }
     public void OnCollisionEnter2D(Collision2D collision)
